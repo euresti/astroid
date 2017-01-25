@@ -50,6 +50,7 @@ def typing_transform():
     were classes.  This applies to all of them.
 
     """
+    import pdb; pdb.set_trace()
     return AstroidBuilder(MANAGER).string_build(dedent('''
     import six
 
@@ -82,7 +83,10 @@ def typing_transform():
 
     '''))
 
+# import pdb; pdb.set_trace()
+
 register_module_extender(MANAGER, 'typing', typing_transform)
+
 MANAGER.register_transform(
     nodes.Call,
     inference_tip(infer_NamedTuple),

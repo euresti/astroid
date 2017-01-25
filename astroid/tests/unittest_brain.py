@@ -538,6 +538,26 @@ class IOBrainTest(unittest.TestCase):
             self.assertIsInstance(raw, astroid.Instance)
             self.assertEqual(raw.name, 'FileIO')
 
+class TypingBrain(unittest.TestCase):
+
+    def test_union(self):
+        node = builder.extract_node("""
+        from typing import Union
+        Union[int, str]
+        """)
+        inferred = next(node.infer())
+        self.assertIsInstance(inferred, nodes.ClassDef)
+        self.assertEqual(inferred.qname(), 'typing.Union')
+
+    def test_generic(self):
+        node = builder.extract_node("""
+        from typing import Generic, T
+        Generic[T]
+        """)
+        inferred = next(node.infer())
+        self.assertIsInstance(inferred, nodes.ClassDef)
+        self.assertEqual(inferred.qname(), 'typing.Generic')
+
 
 if __name__ == '__main__':
     unittest.main()
